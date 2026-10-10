@@ -101,7 +101,7 @@ Nous avons étendu le code de l'Activité 1-1 pour que le client saisisse un ent
 **2. Lancement des applications :**
 
 **Capture d'écran — Connexion du serveur :**
-![Capture Serveur App2](captures/cap-app2-server-connect.png)
+![Capture Serveur App2](captures/app2-etape2.png)
 
 **Interprétation :**
 Le serveur se lance et se met en écoute sur le port 1234. Il affiche le message d'attente, puis accepte la connexion du client.
@@ -111,6 +111,13 @@ Le serveur se lance et se met en écoute sur le port 1234. Il affiche le message
 ### Étape 3 : Test du programme avec différentes valeurs
 
 Lors des premiers tests avec les classes `InputStream` et `OutputStream` classiques, la transmission de nombres négatifs pose problème : la méthode `write()` ne transmet qu'un seul octet (valeurs de 0 à 255). Cela rend impossible l'envoi de valeurs négatives ou supérieures à 255 de façon correcte.
+
+**Capture d'écran — Test initial :**
+![Capture App2 Étape 3](captures/app2-etape3.png)
+
+![Capture App2 Étape 3b](captures/app2-etape3b.png)
+
+![Capture App2 Étape 3c](captures/app2-etape3c.png)
 
 **Solution :** utiliser des flux de données typées.
 
@@ -152,7 +159,7 @@ while (true) {
 ```
 
 **Capture d'écran — Test avec un nombre négatif (`java.io.DataOutputStream`) :**
-![Capture App2 - Nombre négatif (DataOutputStream)](captures/cap-app2-nb-negatif-avec-java.io.DataOutputStream.png)
+![Capture App2 - Nombre négatif (DataOutputStream)](captures/app2-etape4.png)
 
 **Interprétation :**
 Le client saisit `-2`. Grâce à `DataOutputStream.writeInt()`, l'entier est transmis correctement sur 32 bits. Le serveur calcule `-2 × 5 = -10` et renvoie le résultat via `DataOutputStream`. Le client affiche bien `-10`, confirmant que le problème des entiers négatifs est résolu.
@@ -164,7 +171,7 @@ Le client saisit `-2`. Grâce à `DataOutputStream.writeInt()`, l'entier est tra
 Nous avons modifié le code pour que le client puisse saisir plusieurs entiers successivement. La boucle `while (true)` ne s'arrête que si l'utilisateur saisit `0`, ce qui entraîne une déconnexion propre des deux côtés.
 
 **Test avec un nombre positif :**
-![Capture App2 - Nombre positif](captures/cap-app2-nb-positive.png)
+![Capture App2 - Nombre positif](captures/app2-etape5a.png)
 
 **Interprétation :**
 Le client envoie un entier positif. Le serveur calcule correctement `x × 5` et le renvoie. Ce test valide le bon fonctionnement de la boucle pour les valeurs positives.
@@ -172,7 +179,7 @@ Le client envoie un entier positif. Le serveur calcule correctement `x × 5` et 
 ---
 
 **Test avec un nombre négatif (dans la boucle) :**
-![Capture App2 - Nombre négatif](captures/cap-app2-nb-negatif.png)
+![Capture App2 - Nombre négatif](captures/app2-etape5b.png)
 
 **Interprétation :**
 La boucle gère correctement les entiers négatifs grâce aux flux `DataInputStream`/`DataOutputStream`. Le résultat renvoyé est toujours `x × 5`.
@@ -180,7 +187,7 @@ La boucle gère correctement les entiers négatifs grâce aux flux `DataInputStr
 ---
 
 **Test de la fermeture des sockets (saisie de `0`) :**
-![Capture App2 - Envoi de 0](captures/cap-app2-nb0.png)
+![Capture App2 - Envoi de 0](captures/app2-etape5c.png)
 
 **Interprétation :**
 Lorsque l'utilisateur saisit `0`, le client envoie cette valeur via `dos.writeInt(0)` puis sort de la boucle et ferme la socket. Côté serveur, la réception de `0` déclenche la sortie de la boucle avec le message `"Le client s'est déconnecté (0 reçu)."`. La déconnexion est propre des deux côtés.
@@ -188,7 +195,7 @@ Lorsque l'utilisateur saisit `0`, le client envoie cette valeur via `dos.writeIn
 ---
 
 **Session complète finale :**
-![Capture App2 - Session complète](captures/cap-app2-etape5(dernier).png)
+![Capture App2 - Session complète](captures/app2-etape5d.png)
 
 **Interprétation :**
 Cette capture illustre une session complète où plusieurs entiers (positifs et négatifs) sont envoyés avant la déconnexion avec `0`. Le serveur traite chaque requête en boucle et calcule `x × 5`.
