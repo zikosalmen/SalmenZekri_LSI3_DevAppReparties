@@ -43,11 +43,8 @@ Nous avons créé le package `serverPackage` contenant la classe `Server.java`.
 java -cp src serverPackage.Server
 ```
 
-**Capture d'écran (Résultat Console) :**
-```text
-Je suis un serveur en attente la connexion d'un client 
-un client est connecté
-```
+**Capture d'écran :**
+![Capture Serveur](captures/capture1-serveur%20en%20aatend.png)
 
 **Interprétation :**
 Le serveur s'est lancé avec succès. Il s'est mis en écoute sur le port 1234 (`ServerSocket.accept()`). Dès que l'application cliente s'est connectée, le serveur a accepté la connexion et a affiché "un client est connecté" avant de fermer les sockets.
@@ -57,21 +54,21 @@ Le serveur s'est lancé avec succès. Il s'est mis en écoute sur le port 1234 (
 ### Étape 4 : Création du client
 
 Nous avons créé le package `clientPackage` contenant la classe `Client.java`.
-Le client se connecte au serveur en utilisant l'adresse IP `127.0.0.1` (bouclage local).
 
-**Lancement du client :**
-```powershell
-java -cp src clientPackage.Client
-```
+**1. Test avec `localhost` :**
+Le client se connecte d'abord au serveur en utilisant `localhost`.
 
-**Capture d'écran (Résultat Console) :**
-```text
-Je suis un client pas encore connecté...
-je suis un client connecté
-```
+**Capture d'écran du client avec localhost :**
+![Capture Client Localhost](captures/cap2-client%20avec%20localhost.png)
 
 **Interprétation :**
-Le client démarre, affiche son message initial "Je suis un client pas encore connecté...", puis établit la connexion TCP (`new Socket("127.0.0.1", 1234)`) avec le serveur. Une fois la connexion réussie, il affiche le deuxième message confirmant sa connexion.
+Le client démarre, affiche son message initial "Je suis un client pas encore connecté...", puis établit la connexion TCP (`new Socket("localhost", 1234)`) avec le serveur. Une fois la connexion réussie, il affiche le message confirmant sa connexion.
+
+**2. Test avec l'adresse IP (Étape 4.f) :**
+Le code a été modifié pour utiliser l'adresse IP `127.0.0.1` à la place de `localhost`.
+
+**Capture d'écran du client avec adresse IP :**
+![Capture Client IP](captures/cap2-client%20avec%20ip.png)
 
 ---
 
