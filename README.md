@@ -170,24 +170,6 @@ Le client saisit `-2`. Grâce à `DataOutputStream.writeInt()`, l'entier est tra
 
 Nous avons modifié le code pour que le client puisse saisir plusieurs entiers successivement. La boucle `while (true)` ne s'arrête que si l'utilisateur saisit `0`, ce qui entraîne une déconnexion propre des deux côtés.
 
-**Test avec un nombre positif :**
-![Capture App2 - Nombre positif](captures/app2-etape5a.png)
-
-**Interprétation :**
-Le client envoie un entier positif. Le serveur calcule correctement `x × 5` et le renvoie. Ce test valide le bon fonctionnement de la boucle pour les valeurs positives.
-
----
-
-**Test avec un nombre négatif (dans la boucle) :**
-![Capture App2 - Nombre négatif](captures/app2-etape5b.png)
-
-**Interprétation :**
-La boucle gère correctement les entiers négatifs grâce aux flux `DataInputStream`/`DataOutputStream`. Le résultat renvoyé est toujours `x × 5`.
-
----
-
-**Test de la fermeture des sockets (saisie de `0`) :**
-![Capture App2 - Envoi de 0](captures/app2-etape5c.png)
 
 **Interprétation :**
 Lorsque l'utilisateur saisit `0`, le client envoie cette valeur via `dos.writeInt(0)` puis sort de la boucle et ferme la socket. Côté serveur, la réception de `0` déclenche la sortie de la boucle avec le message `"Le client s'est déconnecté (0 reçu)."`. La déconnexion est propre des deux côtés.
