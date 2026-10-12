@@ -15,7 +15,6 @@ git --version
 ```text
 git version 2.x.x.windows.x
 ```
-*(Remarque : Git a bien été initialisé avec `git init` dans le répertoire TP1)*
 
 ---
 
