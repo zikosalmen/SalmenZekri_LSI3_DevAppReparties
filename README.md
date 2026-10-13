@@ -358,7 +358,7 @@ Serveur ferme proprement.
 - Le serveur ecoute sur l'adresse IP 10.110.130.33, ce qui permet la connexion depuis toute machine du meme reseau local.
 - Le client affiche un menu interactif et envoie d'abord le choix d'operation, puis la valeur x.
 - Le serveur recoit le choix, recoit x, calcule le resultat selon l'operation choisie, et renvoie le resultat.
-- La deconnexion propre est conservee : le choix   suffit a terminer la session des deux cotes.
+- La deconnexion propre est conservee : le choix 0 suffit a terminer la session des deux cotes.
 
 ---
 
