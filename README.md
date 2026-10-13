@@ -198,3 +198,178 @@ Cette capture illustre une session complète où plusieurs entiers (positifs et 
 
 **Lien du repository (ENT) :**
 [https://github.com/zikosalmen/SalmenZekri_LSI3_DevAppReparties.git](https://github.com/zikosalmen/SalmenZekri_LSI3_DevAppReparties.git)
+
+
+---
+---
+
+# Activite 1-3 : Amelioration sur le service de calculatrice
+
+**Matiere :** Developpement d'applications reparties
+**Activite 1-3 :** Connexion sur deux machines distinctes + Calculatrice a 4 operations
+
+---
+
+### Etape 1 : Connexion Client/Serveur sur deux machines distinctes
+
+Dans les activites precedentes, localhost etait utilise pour les tests (Client et Serveur sur la meme machine).
+L'objectif est desormais d'utiliser l'adresse IP reelle de la machine pour simuler deux machines distinctes du reseau local.
+
+**Exploitation de java.net.InetAddress et java.net.InetSocketAddress :**
+
+**Code cle (Server.java) :**
+```java
+private static final String SERVER_IP  = "10.110.130.33";
+private static final int    SERVER_PORT = 1234;
+
+InetAddress inetAddress = InetAddress.getByName(SERVER_IP);
+InetSocketAddress socketAddress = new InetSocketAddress(inetAddress, SERVER_PORT);
+
+ServerSocket serverSocket = new ServerSocket();
+serverSocket.bind(socketAddress);
+```
+
+**Code cle (Client.java) :**
+```java
+private static final String SERVER_IP  = "10.110.130.33";
+private static final int    SERVER_PORT = 1234;
+
+InetAddress inetAddress = InetAddress.getByName(SERVER_IP);
+InetSocketAddress socketAddress = new InetSocketAddress(inetAddress, SERVER_PORT);
+
+Socket socket = new Socket();
+socket.connect(socketAddress);
+```
+
+**Interpretation :**
+- Cote serveur : ServerSocket ecoute desormais sur l'adresse IP reelle 10.110.130.33 et non sur  .0.0.0 (toutes interfaces). Cela permet a un client sur une autre machine du reseau local de se connecter en utilisant cette meme adresse IP.
+- Cote client : localhost est remplace par 10.110.130.33 (la meme adresse IP que le serveur). InetSocketAddress encapsule l'adresse et le port.
+
+**Adresse IP utilisee :** 10.110.130.33 (adresse IP reelle de la machine sur le reseau local)
+
+---
+
+### Etape 2 : Service de calculatrice ameliore (4 operations)
+
+Le service de calculatrice est enrichi pour offrir 4 operations au lieu d'une seule.
+
+**Protocole de communication (evolution par rapport a l'Activite 1-2) :**
+
+| Etape | Direction | Donnee |
+|:-----:|:---------:|--------|
+| 1 | Client → Serveur | int choix (1=Add, 2=Sub, 3=Mul, 4=Div, 0=Quitter) |
+| 2 | Client → Serveur | int x (uniquement si choix != 0) |
+| 3 | Serveur → Client | int resultat (uniquement si choix != 0) |
+
+**Menu affiche cote Client :**
+```text
+--- Menu de la calculatrice ---
+1. Addition        (x + 5)
+2. Soustraction    (x - 5)
+3. Multiplication  (x * 5)
+4. Division        (x / 5)
+0. Quitter
+```
+
+**Code cle (Server.java) - switch des operations :**
+```java
+switch (choix) {
+    case 1: resultat = x + 5; break; // Addition
+    case 2: resultat = x - 5; break; // Soustraction
+    case 3: resultat = x * 5; break; // Multiplication
+    case 4: resultat = x / 5; break; // Division entiere
+}
+dos.writeInt(resultat);
+```
+
+---
+
+### Etape 3 : Tests avec plusieurs valeurs et differentes operations
+
+**Resultats observes lors des tests :**
+
+| Choix | Operation | Valeur x | Resultat (x op 5) |
+|:-----:|:---------:|:--------:|:-----------------:|
+| 1 | Addition | 10 | 15 |
+| 2 | Soustraction | 20 | 15 |
+| 3 | Multiplication | 6 | 30 |
+| 4 | Division | 25 | 5 |
+| 0 | Quitter | — | *(deconnexion)* |
+
+**Sortie du client (test) :**
+```text
+=== Client de calculatrice (Activite 1-3) ===
+Je suis un client pas encore connecte...
+Je suis un client connecte au serveur : 10.110.130.33:1234
+
+--- Menu de la calculatrice ---
+1. Addition        (x + 5)
+2. Soustraction    (x - 5)
+3. Multiplication  (x * 5)
+4. Division        (x / 5)
+0. Quitter
+Votre choix : 1
+Veuillez entrer un entier x : 10
+Resultat [Addition] : 15
+
+--- Menu de la calculatrice ---
+...
+Votre choix : 3
+Veuillez entrer un entier x : 6
+Resultat [Multiplication] : 30
+
+--- Menu de la calculatrice ---
+...
+Votre choix : 0
+Deconnexion en cours...
+Connexion fermee. Au revoir !
+```
+
+**Sortie du serveur (test) :**
+```text
+=== Serveur de calculatrice (Activite 1-3) ===
+Adresse IP  : 10.110.130.33
+Port        : 1234
+En attente de connexion d'un client...
+Un client est connecte depuis : 10.110.130.33:64555
+Operation recue : choix=1, x=10
+Resultat calcule : 10 + 5 = 15
+Resultat envoye au client.
+Operation recue : choix=3, x=6
+Resultat calcule : 6 * 5 = 30
+Resultat envoye au client.
+Le client a demande la deconnexion (choix = 0).
+Serveur ferme proprement.
+```
+
+**Interpretation :**
+- Le serveur ecoute sur l'adresse IP 10.110.130.33, ce qui permet la connexion depuis toute machine du meme reseau local.
+- Le client affiche un menu interactif et envoie d'abord le choix d'operation, puis la valeur x.
+- Le serveur recoit le choix, recoit x, calcule le resultat selon l'operation choisie, et renvoie le resultat.
+- La deconnexion propre est conservee : le choix   suffit a terminer la session des deux cotes.
+
+---
+
+### Etape 4 : Commandes de compilation et d'execution
+
+**Compilation :**
+```powershell
+javac -encoding UTF-8 -cp src src\activite3\serverPackage\Server.java src\activite3\clientPackage\Client.java
+```
+
+**Lancement du Serveur :**
+```powershell
+java -cp src activite3.serverPackage.Server
+```
+
+**Lancement du Client (dans un autre terminal) :**
+```powershell
+java -cp src activite3.clientPackage.Client
+```
+
+---
+
+### Etape 5 : Depot des livrables
+
+**Lien du repository (ENT) :**
+[https://github.com/zikosalmen/SalmenZekri_LSI3_DevAppReparties.git](https://github.com/zikosalmen/SalmenZekri_LSI3_DevAppReparties.git)
