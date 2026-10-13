@@ -241,8 +241,11 @@ Socket socket = new Socket();
 socket.connect(socketAddress);
 ```
 
+**Capture d'ecran — Serveur en attente de connexion :**
+![Serveur App3 en attente](captures/app3-serveur-en-attend.png)
+
 **Interpretation :**
-- Cote serveur : ServerSocket ecoute desormais sur l'adresse IP reelle 10.110.130.33 et non sur  .0.0.0 (toutes interfaces). Cela permet a un client sur une autre machine du reseau local de se connecter en utilisant cette meme adresse IP.
+- Cote serveur : ServerSocket ecoute desormais sur l'adresse IP reelle 10.110.130.33 et non sur 0.0.0.0 (toutes interfaces). Cela permet a un client sur une autre machine du reseau local de se connecter en utilisant cette meme adresse IP.
 - Cote client : localhost est remplace par 10.110.130.33 (la meme adresse IP que le serveur). InetSocketAddress encapsule l'adresse et le port.
 
 **Adresse IP utilisee :** 10.110.130.33 (adresse IP reelle de la machine sur le reseau local)
@@ -281,6 +284,9 @@ switch (choix) {
 }
 dos.writeInt(resultat);
 ```
+
+**Capture d'ecran — Cote Client connecte (menu affiché) :**
+![Client App3 connecte avec menu](captures/app3-cote-client-en-attend.png)
 
 ---
 
@@ -324,6 +330,12 @@ Votre choix : 0
 Deconnexion en cours...
 Connexion fermee. Au revoir !
 ```
+
+**Capture d'ecran — Client : saisie Addition (x=9, resultat=14) :**
+![Client App3 operation Addition](captures/app3-client-add.png)
+
+**Capture d'ecran — Client : Division puis Quitter :**
+![Client App3 Division et deconnexion](captures/app3-client-quitter.png)
 
 **Sortie du serveur (test) :**
 ```text
